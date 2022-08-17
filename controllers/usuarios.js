@@ -1,8 +1,10 @@
 
 const { response, request } = require('express');
+const Usuario = require('../models/usuario');
 
 
 
+/*========== Routes ==========*/
 const usuariosGet = (req, res = response) => {
     
     const { q, nombre, apiKey } = req.query;
@@ -16,17 +18,21 @@ const usuariosGet = (req, res = response) => {
 
 }
 
-const usuariosPost = (req = request, res = response) => {
 
-    const { nombre, edad } = req.body;
+const usuariosPost = async(req = request, res = response) => {
+
+    const body = req.body;
+    const usuario = new Usuario( body );
+
+    await usuario.save();
 
     res.json({
         msg: 'post API - controlador',
-        nombre,
-        edad
+        usuario
     });
 
 }
+
 
 const usuariosPut = (req, res = response) => {
 
@@ -39,11 +45,13 @@ const usuariosPut = (req, res = response) => {
 
 }
 
+
 const usuariosPatch = (req, res = response) => {
     res.json({
         msg: 'patch API - controlador'
     })
 }
+
 
 const usuariosDelete = (req, res = response) => {
     res.json({
